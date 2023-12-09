@@ -8,8 +8,16 @@
     --text-color: #333;
     --line-height: 1.6;
 
-    --default-layout-header-height: 66px;
+    --font-family: 'Proxima Nova, Sofia Pro';
+    --default-layout-header-height: 120px;
     --default-layout-width: 1230px;
+    --header-border-radius: 12px;
+    --border-bottom: 12px;
+
+    // Search
+    --search-height: 45px;
+    --search-button-width: 52px;
+    --search-top-spacer: 9px;
 }
 
 * {
@@ -23,7 +31,7 @@ html {
 }
 
 body {
-    font-family: 'Proxima Nova, Sofia Pro';
+    font-family: var(--font-family);
     font-size: 1.6rem;
     line-height: 1.15;
     text-rendering: optimizeSpeed;
