@@ -14,9 +14,9 @@ function SearchProductItem({ ...props }) {
         setSearchResult([]);
     };
     return (
-        <Link to={`/course/${data.maKH}`} className={cx('wrapper')} onClick={() => handleHideResult()}>
-            <Image className={cx('avatar')} src={data.hinh} alt={data.tenKH} />
-            <span className={cx('name')}>{data.tenKH}</span>
+        <Link to={`/product/${data.proID}`} className={cx('wrapper')} onClick={() => handleHideResult()}>
+            <Image className={cx('avatar')} src={data.proImage} alt={data.proName} />
+            <span className={cx('name')}>{data.proName}</span>
         </Link>
     );
 }

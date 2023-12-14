@@ -9,11 +9,12 @@ const routes = {
     register: '/register',
 
     //Client
-    home: '/home',
+    home: '/',
     product: '/product',
     product_details: '/product/:id',
     book: '/book',
     contact: '/contact',
+    cart: '/cart',
 };
 
 export default routes;

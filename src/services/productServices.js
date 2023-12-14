@@ -1,24 +1,24 @@
 import * as httpRequest from '~/utils/httpRequest';
 
-export const course = async () => {
+export const getProduct = async () => {
     try {
-        const res = await httpRequest.get('KhoaHocs');
-        return res;
+        const res = await httpRequest.get('Product');
+        return res.data;
     } catch (error) {
-        console.log(error);
+        console.log(error.message);
     }
 };
 
-export const courseById = async (id) => {
+export const getProductById = async (id) => {
     try {
-        const res = await httpRequest.get(`KhoaHocs/${id}`);
-        return res;
+        const res = await httpRequest.get(`Product/${id}`);
+        return res.data;
     } catch (error) {
-        console.log(error);
+        console.log(error.message);
     }
 };
 
-export const createCourse = async (
+export const createProduct = async (
     name,
     image,
     describe,
@@ -30,7 +30,7 @@ export const createCourse = async (
     adminCode,
 ) => {
     try {
-        const res = await httpRequest.post('KhoaHocs', {
+        const res = await httpRequest.post('Product', {
             tenKH: name,
             hinh: image,
             moTa: describe,
@@ -43,11 +43,11 @@ export const createCourse = async (
         });
         return res;
     } catch (error) {
-        console.log(error);
+        console.log(error.message);
     }
 };
 
-export const updateCourse = async (
+export const updateProduct = async (
     id,
     name,
     image,
@@ -60,7 +60,7 @@ export const updateCourse = async (
     adminCode,
 ) => {
     try {
-        const res = await httpRequest.put(`KhoaHocs/${id}`, {
+        const res = await httpRequest.put(`Product/${id}`, {
             tenKH: name,
             hinh: image,
             moTa: describe,
@@ -73,15 +73,15 @@ export const updateCourse = async (
         });
         return res;
     } catch (error) {
-        console.log(error);
+        console.log(error.message);
     }
 };
 
-export const deleteCourse = async (id) => {
+export const deleteProduct = async (id) => {
     try {
-        const res = await httpRequest.deleteRequest(`KhoaHocs/${id}`);
+        const res = await httpRequest.deleteRequest(`Product/${id}`);
         return res;
     } catch (error) {
-        console.log(error);
+        console.log(error.message);
     }
 };

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { IconShoppingCart, IconMailForward, IconCalendarMonth, IconBuildingStore } from '@tabler/icons-react';
+import { useSelector } from 'react-redux';
 
 import config from '~/config';
 import images from '~/assets/images';
@@ -8,10 +9,13 @@ import styles from './Header.module.scss';
 import classNames from 'classnames/bind';
 import Search from '~/components/Layouts/components/feature/Search';
 import Button from '~/components/common/Button';
+import { cartSelector } from '~/redux/selectors';
 
 const cx = classNames.bind(styles);
 
 function Header() {
+    const { list } = useSelector(cartSelector);
+
     return (
         <header className={cx('wrapper')}>
             <div className={cx('inner')}>
@@ -45,9 +49,10 @@ function Header() {
                             </Button>
                         </li>
                         <li className={cx('menu-item')}>
-                            <Button to={config.routes.book} className={cx('animation-btn')}>
+                            <Button to={config.routes.cart} className={cx('animation-btn')}>
                                 <span className={cx('heading-font')}>GIỎ HÀNG</span>
                                 <IconShoppingCart color="#333" className={cx('menu-icon')} size={20} stroke={2} />
+                                <span className={cx('total-productItem')}>{list?.length}</span>
                             </Button>
                         </li>
                     </ul>

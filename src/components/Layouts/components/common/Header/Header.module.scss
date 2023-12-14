@@ -12,6 +12,11 @@
     width: var(--default-layout-width);
     align-items: center;
     justify-content: space-between;
+    max-width: 100%;
+}
+
+.menu-item {
+    padding: 0 !important;
 }
 
 .actions {
@@ -34,6 +39,7 @@
 }
 
 .animation-btn {
+    position: relative;
     &::after {
         display: none;
         content: '';
@@ -53,7 +59,7 @@
         position: absolute;
         width: 94px;
         height: 4px;
-        background-color: #e60000;
+        background-color: var(--red);
         transform: translate3d(0px, 10.3px, 0px);
         border-radius: 4px;
         animation: myMove 0.4s linear alternate;
@@ -64,6 +70,16 @@
     position: relative;
     top: -2px;
     left: 4px;
+}
+
+.total-productItem {
+    font-size: 2rem;
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0px 6px;
+    background-color: #ccc;
+    border-radius: 50%;
 }
 
 @keyframes myMove {

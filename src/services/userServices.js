@@ -4,7 +4,7 @@ export const user = async () => {
         const res = await httpRequest.get('NguoiDungs');
         return res;
     } catch (error) {
-        console.log(error);
+        console.log('error: ', error.message);
     }
 };
 
@@ -20,7 +20,7 @@ export const createUser = async (userName, password, name, email, image, roleId)
         });
         return res;
     } catch (error) {
-        console.log(error);
+        console.log('error: ', error.message);
     }
 };
 
@@ -37,7 +37,7 @@ export const updateUser = async (id, userName, password, name, email, image, rol
 
         return res;
     } catch (error) {
-        console.log(error);
+        console.log('error: ', error.message);
     }
 };
 
@@ -46,7 +46,7 @@ export const deleteUser = async (id) => {
         const res = await httpRequest.deleteRequest(`NguoiDungs/${id}`);
         return res;
     } catch (error) {
-        console.log(error);
+        console.log('error: ', error.message);
     }
 };
 
@@ -59,6 +59,6 @@ export const loginUser = async (userName_L, password_L) => {
 
         return res;
     } catch (error) {
-        console.log(error);
+        console.log('error: ', error.message);
     }
 };

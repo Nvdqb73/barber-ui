@@ -1,0 +1,148 @@
+.purchaseBadge {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 60px;
+    margin-left: 24px;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 90px;
+
+    h5 {
+        color: var(--primary);
+        font-size: 32px;
+        font-weight: 400;
+        margin: 0 auto;
+        opacity: 0.8;
+    }
+
+    button {
+        margin-top: 16px;
+    }
+
+    ul {
+        display: inline-block;
+        margin: 0;
+        padding: 24px 0 10px 4px;
+        text-align: left;
+
+        li {
+            font-size: 1.6rem;
+            line-height: 1.6;
+            margin-bottom: 10px;
+            padding-left: 35px;
+            position: relative;
+
+            .icon {
+                left: 0;
+                position: absolute;
+                top: 4px;
+            }
+        }
+    }
+}
+
+.numberFormat {
+    max-width: 55px !important;
+    margin-left: 4px;
+}
+
+.imgPreview {
+    border-radius: 16px;
+    margin: 2px 0 20px;
+    overflow: hidden;
+    position: relative;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    width: calc(100% - 2px);
+
+    .bg {
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
+        background-size: 100% auto;
+        padding-top: 56.25%;
+        width: 100%;
+    }
+}
+
+.imgPreview::after {
+    background-image: linear-gradient(180deg, rgba(30, 30, 28, 0), rgba(30, 30, 28, 0.9));
+    bottom: 0;
+    content: '';
+    display: block;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: all 0.3s linear;
+}
+
+.info-item {
+    display: flex;
+    padding: 0 0 45px 0;
+    .icon {
+        position: relative;
+        top: 16px;
+    }
+}
+
+.info-item-price {
+    font-size: 4rem;
+
+    .numberFormat {
+        background-color: var(--light-yellow);
+        max-width: 100px !important;
+    }
+}
+
+.from-quantity {
+    display: flex;
+    flex-direction: column;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type='number'] {
+    -moz-appearance: textfield;
+}
+.btn-quantity {
+    display: flex;
+    flex-direction: row;
+    height: 22px;
+    position: relative;
+    top: -27px;
+    left: 32px;
+}
+
+.from-quantity {
+    display: flex;
+    .label-quantity {
+        font-weight: 600;
+    }
+}
+
+.input-quantity {
+    margin: 11px 0 0 0;
+    font-size: 2rem;
+    border: 1px solid #ccc;
+    height: 32px;
+    width: 80px;
+}
+.icon-quantity {
+    padding: 0 8px;
+}
+
+.description-heading {
+    font-size: 4rem;
+    font-weight: 500px;
+}
+
+.description-label {
+    line-height: 24px;
+    font-size: 1.8rem;
+    font-weight: 400;
+}

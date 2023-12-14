@@ -7,5 +7,9 @@
 .container {
     width: 1230px;
     min-height: 1000px;
-    background-color: #333;
+    background-color: var(--light-yellow);
+}
+
+.content {
+    padding: 12px 0 0 0;
 }

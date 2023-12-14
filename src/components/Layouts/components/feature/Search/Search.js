@@ -32,9 +32,12 @@ function Search() {
 
             const result = await searchServices.search(debouncedValue);
 
-            setSearchResult(result);
-
-            setLoading(false);
+            if (result === undefined) {
+                setSearchResult([]);
+            } else {
+                setSearchResult(result);
+                setLoading(false);
+            }
         };
         fetchApi();
     }, [debouncedValue]);
@@ -66,7 +69,7 @@ function Search() {
                         <h4 className={cx('search-title')}>SẢN PHẨM</h4>
                         {searchResult.map((result) => (
                             <SearchProductItem
-                                key={result.maKH}
+                                key={result.proID}
                                 data={result}
                                 setSearchResult={setSearchResult}
                                 setSearchValue={setSearchValue}

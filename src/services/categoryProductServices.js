@@ -1,11 +1,12 @@
 import * as httpRequest from '~/utils/httpRequest';
 
-export const courseType = async () => {
+export const getCategory = async () => {
     try {
-        const res = await httpRequest.get('LoaiKHs');
-        return res;
+        const res = await httpRequest.get('Category');
+
+        return res.data;
     } catch (error) {
-        console.log(error);
+        console.log('error: ', error.message);
     }
 };
 
@@ -16,7 +17,7 @@ export const createCourseType = async (typeName) => {
         });
         return res;
     } catch (error) {
-        console.log(error);
+        console.log('error: ', error.message);
     }
 };
 
@@ -28,7 +29,7 @@ export const updateCourseType = async (typeId, typeName) => {
 
         return res;
     } catch (error) {
-        console.log(error);
+        console.log('error: ', error.message);
     }
 };
 
@@ -37,6 +38,6 @@ export const deleteCourseType = async (id) => {
         const res = await httpRequest.deleteRequest(`LoaiKHs/${id}`);
         return res;
     } catch (error) {
-        console.log(error);
+        console.log('error: ', error.message);
     }
 };

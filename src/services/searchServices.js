@@ -1,14 +1,15 @@
 import * as httpRequest from '~/utils/httpRequest';
 
-export const search = async (query) => {
+export const search = async (productkey) => {
     try {
-        const res = await httpRequest.get('SearchKhoaHocs', {
+        const res = await httpRequest.get('Product/search', {
             params: {
-                query,
+                productkey,
             },
         });
-        return res;
+
+        return res.data;
     } catch (error) {
-        console.log(error);
+        console.log('error: ', error.message);
     }
 };
