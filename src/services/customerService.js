@@ -19,13 +19,16 @@ export const getCustomerById = async (id) => {
     }
 };
 
-export const createCustomer = async (customerID, startDate, startTime, payID) => {
+export const createCustomer = async (firstName, lastName, email, userID) => {
     try {
         const res = await httpRequest.post('Customer', {
-            customerID,
-            startDate,
-            startTime,
-            payID,
+            firstName,
+            lastName,
+            picture: 'null',
+            email,
+            numberphone: 'null',
+            dateOfBirth: '2023-01-01',
+            userID,
         });
         return res;
     } catch (error) {

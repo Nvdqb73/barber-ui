@@ -66,7 +66,7 @@ function ProductDetailItem({ ...props }) {
             <div className="col-4">
                 <ul>
                     <li className={cx('info-item')}>
-                        <IconCurrencyDollar className={cx('icon')} size={30} stroke={3} />
+                        <IconCurrencyDollar className={cx('icon')} size={40} stroke={3} />
                         <h2 className={cx('info-item-price')}>
                             <NumericFormat className={cx('numberFormat')} value={data.price} thousandSeparator="./" />
                         </h2>

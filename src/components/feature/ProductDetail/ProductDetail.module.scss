@@ -83,12 +83,13 @@
     padding: 0 0 45px 0;
     .icon {
         position: relative;
-        top: 16px;
+        top: 4px;
     }
 }
 
 .info-item-price {
     font-size: 4rem;
+    width: 100%;
 
     .numberFormat {
         background-color: var(--light-yellow);

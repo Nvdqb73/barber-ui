@@ -13,21 +13,24 @@ export const getBookById = async (id) => {
         const res = await httpRequest.get(`Booking/${id}`, {
             params: {},
         });
-        return res;
+        return res.data;
     } catch (error) {
         console.log('error: ', error.message);
     }
 };
 
-export const createBook = async (customerID, startDate, startTime, payID) => {
+export const createBook = async (startDate, startTime, note, storeID, serID, employeID) => {
     try {
         const res = await httpRequest.post('Booking', {
-            customerID,
             startDate,
             startTime,
-            payID,
+            note,
+            customerID: 1,
+            storeID,
+            serID,
+            employeID,
         });
-        return res;
+        return res.data;
     } catch (error) {
         console.log('error: ', error.message);
     }

@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import styles from './ProductDetail.module.scss';
 

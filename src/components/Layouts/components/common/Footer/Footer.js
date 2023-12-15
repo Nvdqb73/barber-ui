@@ -1,7 +1,6 @@
 import classNames from 'classnames/bind';
 import { Link } from 'react-router-dom';
 import styles from './Footer.module.scss';
-import Image from '~/components/common/Image';
 
 const cx = classNames.bind(styles);
 
@@ -14,7 +13,6 @@ function Footer() {
                         <div className="row align-items-center">
                             <div className="col-5">
                                 <div className="footer-top-data d-flex gap-30 align-items-center">
-                                    {/* <Image src={'aaaaa'} alt="newsletter" /> */}
                                     <h2 className="mb-0 text-white">Sign Up for Newsletter</h2>
                                 </div>
                             </div>
@@ -48,20 +46,6 @@ function Footer() {
                                     <a href="nvdqb73@gmail.com" className="mt-2 d-block mb-0 text-white">
                                         nvdqb73@gmail.com
                                     </a>
-                                    <div className="social_icons d-flex align-items-center gap-30 mt-4">
-                                        <a className="text-white" href="#">
-                                            {/* <BsLinkedin className="fs-4" /> */}
-                                        </a>
-                                        <a className="text-white" href="#">
-                                            {/* <BsInstagram className="fs-4" /> */}
-                                        </a>
-                                        <a className="text-white" href="#">
-                                            {/* <BsGithub className="fs-4" /> */}
-                                        </a>
-                                        <a className="text-white" href="#">
-                                            {/* <BsYoutube className="fs-4" /> */}
-                                        </a>
-                                    </div>
                                 </div>
                             </div>
                             <div className="col-3">

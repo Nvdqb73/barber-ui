@@ -12,13 +12,13 @@ export const get = async (path, options = {}) => {
 export const post = async (path, roleName) => {
     const response = await httpRequest.post(path, roleName);
 
-    return response.data;
+    return response;
 };
 
 export const put = async (path, options = {}) => {
     const response = await httpRequest.put(path, options);
 
-    return response.data;
+    return response;
 };
 
 export const deleteRequest = async (path) => {

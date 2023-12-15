@@ -1,22 +1,19 @@
 import * as httpRequest from '~/utils/httpRequest';
 export const user = async () => {
     try {
-        const res = await httpRequest.get('NguoiDungs');
-        return res;
+        const res = await httpRequest.get('User');
+        return res.data;
     } catch (error) {
         console.log('error: ', error.message);
     }
 };
 
-export const createUser = async (userName, password, name, email, image, roleId) => {
+export const createUser = async (userName, password) => {
     try {
-        const res = await httpRequest.post('NguoiDungs', {
-            tenDangNhap: userName,
-            password: password,
-            tenND: name,
-            email: email,
-            avatar: image,
-            roleID: roleId,
+        const res = await httpRequest.post('User', {
+            userName,
+            password,
+            roleID: 2,
         });
         return res;
     } catch (error) {
@@ -26,7 +23,7 @@ export const createUser = async (userName, password, name, email, image, roleId)
 
 export const updateUser = async (id, userName, password, name, email, image, roleID) => {
     try {
-        const res = await httpRequest.put(`NguoiDungs/${id}`, {
+        const res = await httpRequest.put(`User/${id}`, {
             tenDangNhap: userName,
             password: password,
             tenND: name,
@@ -43,7 +40,7 @@ export const updateUser = async (id, userName, password, name, email, image, rol
 
 export const deleteUser = async (id) => {
     try {
-        const res = await httpRequest.deleteRequest(`NguoiDungs/${id}`);
+        const res = await httpRequest.deleteRequest(`User/${id}`);
         return res;
     } catch (error) {
         console.log('error: ', error.message);
@@ -52,11 +49,24 @@ export const deleteUser = async (id) => {
 
 export const loginUser = async (userName_L, password_L) => {
     try {
-        const res = await httpRequest.post('NguoiDungs/Login', {
-            tenDangNhap: userName_L,
+        const res = await httpRequest.post('Auth/login', {
+            userName: userName_L,
             password: password_L,
+            roleID: 2,
         });
+        return res;
+    } catch (error) {
+        console.log('error: ', error.message);
+    }
+};
 
+export const registerUser = async (userName, password) => {
+    try {
+        const res = await httpRequest.post('Auth/register', {
+            userName,
+            password,
+            roleID: 2,
+        });
         return res;
     } catch (error) {
         console.log('error: ', error.message);
