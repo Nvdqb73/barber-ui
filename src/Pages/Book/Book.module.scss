@@ -47,14 +47,22 @@ label {
     cursor: pointer;
 }
 
+.btn-submit {
+    display: flex;
+    width: 390px;
+    margin: auto;
+    position: relative;
+    left: 63px;
+}
+
 .submitButton {
-    width: 500px; /* Căn nút có chiều rộng bằng ô input */
-    padding: 10px; /* Thêm padding */
-    background-color: var(--red); /* Màu nền xanh da trời */
-    color: var(--white); /* Màu chữ trắng */
-    border: blue; /* Không có viền */
-    border-radius: 20px; /* Bo tròn các góc viền */
-    cursor: pointer; /* Biến con trỏ thành bàn tay khi di chuyển lên nút */
+    width: 500px;
+    padding: 10px;
+    background-color: var(--red);
+    color: var(--white);
+    border: blue;
+    border-radius: 20px;
+    cursor: pointer;
     align-items: center;
     color: gold;
     font-size: 18px;

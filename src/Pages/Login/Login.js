@@ -40,7 +40,6 @@ function Login() {
         setLoading(true);
         const result = await userServices.loginUser(userName_L, password_L);
 
-        console.log('login nè', result);
         if (result?.data && result?.status === 200) {
             localStorage.setItem('token', result?.data);
             setCurrentUser(true);

@@ -1,7 +1,18 @@
 import * as httpRequest from '~/utils/httpRequest';
-export const user = async () => {
+export const getUser = async () => {
     try {
         const res = await httpRequest.get('User');
+        return res.data;
+    } catch (error) {
+        console.log('error: ', error.message);
+    }
+};
+
+export const getUserById = async (id) => {
+    try {
+        const res = await httpRequest.get(`User/${id}`, {
+            params: {},
+        });
         return res.data;
     } catch (error) {
         console.log('error: ', error.message);

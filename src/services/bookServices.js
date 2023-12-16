@@ -19,13 +19,13 @@ export const getBookById = async (id) => {
     }
 };
 
-export const createBook = async (startDate, startTime, note, storeID, serID, employeID) => {
+export const createBook = async (startDate, startTime, note, customerID, storeID, serID, employeID) => {
     try {
         const res = await httpRequest.post('Booking', {
             startDate,
             startTime,
             note,
-            customerID: 1,
+            customerID,
             storeID,
             serID,
             employeID,

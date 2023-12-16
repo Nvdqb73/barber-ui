@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { jwtDecode } from 'jwt-decode';
+import classNames from 'classnames/bind';
+import { toast } from 'react-toastify';
+import moment from 'moment';
 import styles from './Book.module.scss';
-// import jwt from 'jsonwebtoken';
 
 import * as serviceServices from '~/services/serviceServices';
 import * as employeeServices from '~/services/employeeServices';
@@ -8,10 +11,10 @@ import * as storeServices from '~/services/storeServices';
 import * as bookServices from '~/services/bookServices';
 import * as customerService from '~/services/customerService';
 
-import { toast } from 'react-toastify';
-import moment from 'moment';
-
+const cx = classNames.bind(styles);
 const Book = () => {
+    const [userID, setUserID] = useState(null);
+    const [customerItem, setCustomerItem] = useState('');
     const [name, setName] = useState('');
     const [guests, setGuests] = useState('');
     const [store, setStore] = useState([]);
@@ -29,49 +32,24 @@ const Book = () => {
     const [customerID, setCustomerID] = useState([]);
     const [selectedStore, setSelectedStore] = useState(null);
 
-    // const token = localStorage.getItem('token');
+    useEffect(() => {
+        const token = localStorage.getItem('token');
 
-    // useEffect(() => {
-    //     // Lấy token từ local storage hoặc nơi khác bạn lưu trữ
-    //     const token = localStorage.getItem('yourTokenKey');
-
-    //     if (token) {
-    //         try {
-    //             // Giải mã token và lấy thông tin
-    //             const decodedToken = jwt.verify(token, 'yourSecretKey');
-    //             // setUserInfo(decodedToken);
-    //         } catch (error) {
-    //             // Xử lý lỗi khi giải mã không thành công
-    //             console.error('Error decoding token:', error);
-    //         }
-    //     }
-    // }, []);
-
-    // console.log('token nè', token);
-    // const jwt = require('jsonwebtoken');
-
-    // // Token từ backends
-    // const tokenFromBackend = token;
-
-    // // Mã bí mật (secret key) mà bạn đã sử dụng để ký token
-    // const secretKey = 'DOANCHUYENNGANH2023';
-
-    // try {
-    //     // Giải mã token
-    //     const decodedToken = jwt.verify(tokenFromBackend, secretKey);
-
-    //     // decodedToken chứa thông tin giải mã từ token
-    //     console.log(decodedToken);
-    // } catch (error) {
-    //     // Xử lý lỗi nếu token không hợp lệ hoặc đã hết hạn
-    //     console.error('Error decoding token:', error.message);
-    // }
+        if (token) {
+            try {
+                const decoded = jwtDecode(token);
+                setUserID(decoded?.userID);
+            } catch (error) {
+                console.error('Token không tồn tại:', error);
+            }
+        }
+    }, []);
 
     useEffect(() => {
         const fetchApi = async () => {
             try {
                 const response = await serviceServices.getService();
-                // console.log('server', response);
+
                 setServices(response);
             } catch (error) {
                 console.error(error);
@@ -81,7 +59,7 @@ const Book = () => {
         const fetchEmployees = async () => {
             try {
                 const response = await employeeServices.getEmployee();
-                // console.log('Employee', response);
+
                 setEmployees(response);
             } catch (error) {
                 console.error(error);
@@ -92,7 +70,7 @@ const Book = () => {
             try {
                 const response = await bookServices.getBook();
                 const startDate = response.map((Booking) => Booking.startDate);
-                // console.log('forEach', startDate);
+
                 setStartDate(startDate);
             } catch (error) {
                 console.error(error);
@@ -102,7 +80,7 @@ const Book = () => {
         const fetchStore = async () => {
             try {
                 const response = await storeServices.getStore();
-                // console.log('Store', response);
+
                 setStore(response);
             } catch (error) {
                 console.error(error);
@@ -115,17 +93,20 @@ const Book = () => {
         fetchStore();
     }, []);
 
-    const handleNameChange = (event) => {
-        setName(event.target.value);
-        setNameError('');
-    };
-
-    const handleGuestsChange = (event) => {
-        const value = event.target.value;
-        if (value >= 1) {
-            setGuests(value);
-        }
-    };
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const response = await customerService.getCustomer();
+                const customer = response.find((item) => item?.userID === userID);
+                if (customer) {
+                    setCustomerItem(customer);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        fetchUser();
+    }, [userID]);
 
     const handleStylistChange = (event) => {
         const selectedStylistId = event.target.value;
@@ -174,18 +155,16 @@ const Book = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
-        if (name.trim() === '') {
-            toast.error('Vui lòng nhập họ tên');
-            return;
-        }
-
         try {
             const [startDates] = startDate;
 
             const employees = employee?.employeID;
 
-            await bookServices.createBook(startDates, startTime, note, storeID, serID, employees);
+            const customerID = customerItem?.customerID;
+
+            if (employees && customerID) {
+                await bookServices.createBook(startDates, startTime, note, customerID, storeID, serID, employees);
+            }
 
             setStartDate('');
             setStartTime('');
@@ -195,11 +174,11 @@ const Book = () => {
             setEmployee('');
             setServices([]);
 
-            toast.success('success');
+            toast.success('Đặt lịch thành công');
         } catch (error) {
             console.error(error);
 
-            toast.error('failed');
+            toast.error('Đặt lịch thất bại vui lòng thử lại!');
         }
     };
 
@@ -234,95 +213,100 @@ const Book = () => {
             </div>
         );
     };
-
     return (
-        <div className={styles.bookingForm}>
-            <div className={styles.formGroup}>
-                <label htmlFor="name">Họ tên:</label>
-                <input type="text" id="name" value={name} onChange={handleNameChange} className={styles.inputField} />
-            </div>
+        <div className={cx('wrapper')}>
+            <div className={cx('bookingForm')}>
+                <div className={cx('formGroup')}>
+                    <label>Họ tên:</label>
+                    <span>{`${customerItem?.firstName} ${customerItem?.lastName}`}</span>
+                </div>
 
-            <div className={styles.formGroup}>
-                <label htmlFor="store">Chi nhánh:</label>
-                <select
-                    id="store"
-                    value={selectedStore?.storeID}
-                    onChange={handleStoreChange}
-                    className={styles.inputField}
-                >
-                    <option value="">-- Chọn chi nhánh --</option>
-                    {store.map((store) => (
-                        <option key={store.storeID} value={store.storeID}>
-                            {store.storeName}
-                        </option>
-                    ))}
-                </select>
-            </div>
+                <div className={cx('formGroup')}>
+                    <label htmlFor="store">Chi nhánh:</label>
+                    <select
+                        id="store"
+                        value={selectedStore?.storeID}
+                        onChange={handleStoreChange}
+                        className={cx('inputField')}
+                    >
+                        <option value="">-- Chọn chi nhánh --</option>
+                        {store.map((store) => (
+                            <option key={store.storeID} value={store.storeID}>
+                                {store.storeName}
+                            </option>
+                        ))}
+                    </select>
+                </div>
 
-            <div className={styles.formGroup}>
-                <label htmlFor="employee">Thợ :</label>
-                <select
-                    id="employee"
-                    value={employee?.employeID}
-                    onChange={handleStylistChange}
-                    className={styles.inputField}
-                >
-                    <option value="">-- Chọn thợ --</option>
-                    {employees.map((employee) => (
-                        <option key={employee.employeID} value={employee.employeID}>
-                            {employee.firstName} {employee.lastName}
-                        </option>
-                    ))}
-                </select>
-            </div>
+                <div className={cx('formGroup')}>
+                    <label htmlFor="employee">Thợ :</label>
+                    <select
+                        id="employee"
+                        value={employee?.employeID}
+                        onChange={handleStylistChange}
+                        className={cx('inputField')}
+                    >
+                        <option value="">-- Chọn thợ --</option>
+                        {employees.map((employee) => (
+                            <option key={employee.employeID} value={employee.employeID}>
+                                {employee.firstName} {employee.lastName}
+                            </option>
+                        ))}
+                    </select>
+                </div>
 
-            <div className={styles.formGroup}>
-                <label htmlFor="service">Dịch vụ:</label>
-                <select
-                    id="service"
-                    value={selectedService?.serID}
-                    onChange={handleServiceChange}
-                    className={styles.inputField}
-                >
-                    <option value="">-- Chọn dịch vụ --</option>
-                    {services.map((service) => (
-                        <option key={service.serID} value={service.serID}>
-                            {service.serName} - {service.serPrice}₫
-                        </option>
-                    ))}
-                </select>
-            </div>
+                <div className={cx('formGroup')}>
+                    <label htmlFor="service">Dịch vụ:</label>
+                    <select
+                        id="service"
+                        value={selectedService?.serID}
+                        onChange={handleServiceChange}
+                        className={cx('inputField')}
+                    >
+                        <option value="">-- Chọn dịch vụ --</option>
+                        {services.map((service) => (
+                            <option key={service.serID} value={service.serID}>
+                                {service.serName} - {service.serPrice}₫
+                            </option>
+                        ))}
+                    </select>
+                </div>
 
-            <div className={styles.formGroup}>
-                <label htmlFor="date">Ngày:</label>
-                <input
-                    type="date"
-                    id="date"
-                    value={startDate}
-                    onChange={handleDateChange}
-                    min={moment().format('DD-MM-YYY')}
-                    className={styles.inputField}
-                />
-            </div>
+                <div className={cx('formGroup')}>
+                    <label htmlFor="date">Ngày:</label>
+                    <input
+                        type="date"
+                        id="date"
+                        value={startDate}
+                        onChange={handleDateChange}
+                        min={moment().format('DD-MM-YYY')}
+                        className={cx('inputField')}
+                    />
+                </div>
 
-            <div className={styles.formGroup}>
-                <label htmlFor="time">Giờ:</label>
-                <input
-                    type="time"
-                    id="time"
-                    value={startTime}
-                    onChange={handleTimeChange}
-                    className={styles.inputField}
-                />
-            </div>
+                <div className={cx('formGroup')}>
+                    <label htmlFor="time">Giờ:</label>
+                    <input
+                        type="time"
+                        id="time"
+                        value={startTime}
+                        onChange={handleTimeChange}
+                        className={cx('inputField')}
+                    />
+                </div>
 
-            <div className={styles.formGroup}>
-                <label htmlFor="notes">Ghi chú: </label>
-                <textarea id="note" value={note} onChange={handleNoteChange} className={styles.inputField}></textarea>
+                <div className={cx('formGroup')}>
+                    <label htmlFor="notes">Ghi chú: </label>
+                    <textarea
+                        id="note"
+                        value={note}
+                        onChange={handleNoteChange}
+                        className={cx('inputField')}
+                    ></textarea>
+                </div>
             </div>
-
-            <div className={styles.formGroup}>
-                <button onClick={handleSubmit} className={styles.submitButton}>
+            <div className={cx('btn-submit')}>
+                <button onClick={handleSubmit} className={cx('submitButton')}>
                     Xác nhận đặt lịch
                 </button>
             </div>
