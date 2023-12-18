@@ -7,25 +7,42 @@ import styles from './Menu.module.scss';
 
 const cx = classNames.bind(styles);
 
-function MenuItem({ data, onClick }) {
+function MenuItem({ ...props }) {
+    const { data, login, logout, title } = props;
     const navigate = useNavigate();
     const handleLogout = () => {
         localStorage.removeItem('token');
         navigate('/login');
     };
 
+    const handleLogin = () => {
+        navigate('/login');
+    };
     const classes = cx('menu-item', {
         separate: data.separate,
     });
     return (
-        <Button className={classes} leftIcon={data.icon} to={data.to} onClick={(onClick = () => handleLogout())}>
-            {data.title}
-        </Button>
+        <div>
+            {logout || login ? (
+                login ? (
+                    <Button className={classes} leftIcon={data.icon} to={data.to} onClick={handleLogout}>
+                        Đăng xuất
+                    </Button>
+                ) : (
+                    <Button className={classes} leftIcon={data.icon} to={data.to} onClick={handleLogin}>
+                        Đăng nhập
+                    </Button>
+                )
+            ) : (
+                <Button className={classes} leftIcon={data.icon} to={data.to}>
+                    {data.title}
+                </Button>
+            )}
+        </div>
     );
 }
 MenuItem.propTypes = {
     data: PropTypes.object,
-    onClick: PropTypes.func,
 };
 
 export default MenuItem;

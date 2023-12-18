@@ -1,0 +1,73 @@
+.formGroup {
+    display: flex;
+    align-items: center;
+    color: fuchsia;
+}
+
+label {
+    flex: 0 0 100px;
+    margin-right: 20px;
+}
+
+.h1 {
+    align-items: center;
+    margin-right: 130px;
+}
+.inputField {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.bookingForm {
+    width: 500px;
+    margin: 0 auto;
+}
+
+.formGroup {
+    margin-bottom: 7px;
+}
+
+.addServiceButton {
+    margin-top: 10px;
+}
+
+.removeServiceButton {
+    margin-left: 10px;
+    padding: 5px 10px;
+    background-color: var(--red);
+    color: var(--white);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-submit {
+    display: flex;
+    width: 390px;
+    margin: auto;
+    position: relative;
+    left: 63px;
+}
+
+.submitButton {
+    width: 500px;
+    padding: 10px;
+    background-color: var(--red);
+    color: var(--white);
+    border: blue;
+    border-radius: 20px;
+    cursor: pointer;
+    align-items: center;
+    color: gold;
+    font-size: 18px;
+}
+
+.textareaField {
+    width: 500px;
+}

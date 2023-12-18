@@ -1,5 +1,15 @@
 import { Link } from 'react-router-dom';
-import { IconShoppingCart, IconMailForward, IconCalendarMonth, IconBuildingStore } from '@tabler/icons-react';
+import {
+    IconShoppingCart,
+    IconMailForward,
+    IconCalendarMonth,
+    IconBuildingStore,
+    IconUserMinus,
+    IconSettings,
+    IconArrowBarRight,
+    IconCalendarStats,
+} from '@tabler/icons-react';
+
 import { useSelector } from 'react-redux';
 
 import config from '~/config';
@@ -10,11 +20,47 @@ import classNames from 'classnames/bind';
 import Search from '~/components/Layouts/components/feature/Search';
 import Button from '~/components/common/Button';
 import { cartSelector } from '~/redux/selectors';
+import Menu from '../Popper/Menu';
+import { useEffect, useState } from 'react';
 
 const cx = classNames.bind(styles);
 
 function Header() {
     const { list } = useSelector(cartSelector);
+    const [logout, setLogout] = useState(true);
+    const [login, setLogin] = useState(false);
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            setLogin(true);
+            setLogout(false);
+        }
+    }, []);
+
+    const userMenu = [
+        {
+            icon: <IconUserMinus size={15} color="#333" stroke={2} />,
+            title: 'Trang cá nhân',
+            to: './huhu',
+        },
+        {
+            icon: <IconCalendarStats size={15} color="#333" stroke={2} />,
+            title: 'Lịch sử đặt lịch',
+            to: '/bookingHistory',
+        },
+        {
+            icon: <IconSettings size={15} color="#333" stroke={2} />,
+            title: 'Cài đặt',
+            to: './huhu',
+        },
+        {
+            icon: <IconArrowBarRight size={15} color="#333" stroke={2} />,
+            login,
+            logout,
+            separate: true,
+        },
+    ];
 
     return (
         <header className={cx('wrapper')}>
@@ -54,6 +100,15 @@ function Header() {
                                 <IconShoppingCart color="#333" className={cx('menu-icon')} size={20} stroke={2} />
                                 <span className={cx('total-productItem')}>{list?.length}</span>
                             </Button>
+                        </li>
+                        <li className={cx('menu-item')}>
+                            <Menu items={userMenu}>
+                                <Image
+                                    className={cx('user-avatar')}
+                                    src="https://avatars.githubusercontent.com/u/88336997?v=4"
+                                    alt="Nguyen văn A"
+                                />
+                            </Menu>
                         </li>
                     </ul>
                 </div>

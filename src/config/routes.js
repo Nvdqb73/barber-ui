@@ -1,6 +1,9 @@
+const local = 'http://localhost:4000/';
+
 const routes = {
     //Not Found
     error404: '*',
+    local,
 
     //Login
     login: '/login',
@@ -13,6 +16,7 @@ const routes = {
     product: '/product',
     product_details: '/product/:id',
     book: '/book',
+    bookingHistory: '/bookingHistory',
     contact: '/contact',
     cart: '/cart',
 };
