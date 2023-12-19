@@ -55,3 +55,16 @@
     width: 130px;
     margin-left: 55px;
 }
+
+.personal {
+    display: flex;
+
+    .form-label {
+        line-height: 39px;
+        width: 38px;
+    }
+}
+
+.otherLabel {
+    width: 120px !important;
+}

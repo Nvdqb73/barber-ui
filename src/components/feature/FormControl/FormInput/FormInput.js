@@ -20,13 +20,24 @@ function FormInput({ medium, ...props }, ref) {
         setFirstName,
         setLastName,
         setEmail,
+        personal,
+        otherLabel,
     } = props;
+
+    const wrapperClass = cx('wrapper', {
+        personal,
+    });
+
+    const labelClass = cx('form-label', {
+        otherLabel,
+    });
 
     const classer = cx('inputWrap', {
         medium,
     });
     const classers = cx('label', {
         medium,
+        otherLabel,
     });
     const classes = cx('labelGroup', {
         labelStyle,
@@ -56,18 +67,24 @@ function FormInput({ medium, ...props }, ref) {
         }
     };
     return (
-        <div className={cx('wrapper')}>
-            <div className={classes}>
-                <label className={classers}>{labelTitle}</label>
-                <label
-                    className={classComeback}
-                    onClick={() => {
-                        setCurrentLogin(true);
-                    }}
-                >
-                    Quay lại
-                </label>
-            </div>
+        <div className={wrapperClass}>
+            {personal ? (
+                <div className={labelClass}>
+                    <label className={cx('label-Name')}>{labelTitle}</label>
+                </div>
+            ) : (
+                <div className={classes}>
+                    <label className={classers}>{labelTitle}</label>
+                    <label
+                        className={classComeback}
+                        onClick={() => {
+                            setCurrentLogin(true);
+                        }}
+                    >
+                        Quay lại
+                    </label>
+                </div>
+            )}
             <div className={classer}>
                 <input
                     ref={ref}

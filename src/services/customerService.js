@@ -13,7 +13,7 @@ export const getCustomerById = async (id) => {
         const res = await httpRequest.get(`Customer/${id}`, {
             params: {},
         });
-        return res;
+        return res.data;
     } catch (error) {
         console.log('error: ', error.message);
     }

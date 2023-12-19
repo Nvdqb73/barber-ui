@@ -19,6 +19,7 @@ const routes = {
     bookingHistory: '/bookingHistory',
     contact: '/contact',
     cart: '/cart',
+    personalPage: '/personalPage',
 };
 
 export default routes;

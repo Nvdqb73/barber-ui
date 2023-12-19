@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
 import {
     IconShoppingCart,
     IconMailForward,
@@ -11,6 +12,8 @@ import {
 } from '@tabler/icons-react';
 
 import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { cartSelector } from '~/redux/selectors';
 
 import config from '~/config';
 import images from '~/assets/images';
@@ -19,13 +22,17 @@ import styles from './Header.module.scss';
 import classNames from 'classnames/bind';
 import Search from '~/components/Layouts/components/feature/Search';
 import Button from '~/components/common/Button';
-import { cartSelector } from '~/redux/selectors';
+
 import Menu from '../Popper/Menu';
-import { useEffect, useState } from 'react';
+
+import * as customerService from '~/services/customerService';
 
 const cx = classNames.bind(styles);
 
 function Header() {
+    const [currentUser, setCurrentUser] = useState(false);
+    const [userID, setUserID] = useState(null);
+    const [customerItem, setCustomerItem] = useState(null);
     const { list } = useSelector(cartSelector);
     const [logout, setLogout] = useState(true);
     const [login, setLogin] = useState(false);
@@ -33,16 +40,44 @@ function Header() {
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
-            setLogin(true);
-            setLogout(false);
+            try {
+                setCurrentUser(true);
+                setLogin(true);
+                setLogout(false);
+                const decoded = jwtDecode(token);
+                setUserID(decoded?.userID);
+            } catch (error) {
+                setCurrentUser(false);
+                setLogin(false);
+                setLogout(true);
+                console.error('Bạn chưa đặng nhập:', error);
+            }
         }
     }, []);
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const response = await customerService.getCustomer();
+                const customer = response.find((item) => item?.userID === userID);
+                if (customer) {
+                    setCustomerItem(customer);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        fetchUser();
+    }, [userID]);
+
+    const state = { state: customerItem };
 
     const userMenu = [
         {
             icon: <IconUserMinus size={15} color="#333" stroke={2} />,
             title: 'Trang cá nhân',
-            to: './huhu',
+            to: '/personalPage',
+            state: state,
         },
         {
             icon: <IconCalendarStats size={15} color="#333" stroke={2} />,
@@ -52,7 +87,7 @@ function Header() {
         {
             icon: <IconSettings size={15} color="#333" stroke={2} />,
             title: 'Cài đặt',
-            to: './huhu',
+            to: '/huhu',
         },
         {
             icon: <IconArrowBarRight size={15} color="#333" stroke={2} />,
@@ -61,7 +96,6 @@ function Header() {
             separate: true,
         },
     ];
-
     return (
         <header className={cx('wrapper')}>
             <div className={cx('inner')}>
@@ -98,15 +132,16 @@ function Header() {
                             <Button to={config.routes.cart} className={cx('animation-btn')}>
                                 <span className={cx('heading-font')}>GIỎ HÀNG</span>
                                 <IconShoppingCart color="#333" className={cx('menu-icon')} size={20} stroke={2} />
-                                <span className={cx('total-productItem')}>{list?.length}</span>
+                                <span className={cx('total-productItem')}>{currentUser ? list?.length : 0}</span>
                             </Button>
                         </li>
+
                         <li className={cx('menu-item')}>
                             <Menu items={userMenu}>
                                 <Image
                                     className={cx('user-avatar')}
-                                    src="https://avatars.githubusercontent.com/u/88336997?v=4"
-                                    alt="Nguyen văn A"
+                                    src={currentUser ? customerItem?.picture : 'error'}
+                                    alt={currentUser ? customerItem?.lastName : 'Chưa đăng nhập'}
                                 />
                             </Menu>
                         </li>

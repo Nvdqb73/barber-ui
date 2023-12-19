@@ -7,6 +7,8 @@ import styles from './CartItem.module.scss';
 import Image from '~/components/common/Image';
 import { useDispatch } from 'react-redux';
 import Button from '~/components/common/Button';
+import { convertPrice } from '~/utils/convert';
+
 const cx = classNames.bind(styles);
 
 function CartItem({ data }) {
@@ -50,17 +52,17 @@ function CartItem({ data }) {
         <div className={cx('cart-details')}>
             <div className={cx('cart-list')}>
                 <div className={cx('image-cart')}>
-                    <Image className={cx('image')} src={data.proImage} alt="aa" />
+                    <Image className={cx('image')} src={data?.proImage} alt="aa" />
                 </div>
                 <div className={cx('cart-info')}>
-                    <h3 className={cx('cart-name')}>{data.proName}</h3>
+                    <h3 className={cx('cart-name')}>{data?.proName}</h3>
                     <h4 className={cx('quantity')}>
                         Số lượng:
                         <span> {quantity}</span>
                     </h4>
                     <h4 className={cx('cart-price')}>
                         Giá:
-                        <span> ${totalPrice}</span>
+                        <span> {convertPrice(totalPrice)}</span>
                     </h4>
                 </div>
                 <div className={cx('action-cart')}>

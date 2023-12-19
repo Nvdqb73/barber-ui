@@ -8,7 +8,7 @@ import styles from './Menu.module.scss';
 const cx = classNames.bind(styles);
 
 function MenuItem({ ...props }) {
-    const { data, login, logout, title } = props;
+    const { data, login, logout, state } = props;
     const navigate = useNavigate();
     const handleLogout = () => {
         localStorage.removeItem('token');
@@ -34,7 +34,7 @@ function MenuItem({ ...props }) {
                     </Button>
                 )
             ) : (
-                <Button className={classes} leftIcon={data.icon} to={data.to}>
+                <Button className={classes} leftIcon={data.icon} to={data.to} state={state}>
                     {data.title}
                 </Button>
             )}

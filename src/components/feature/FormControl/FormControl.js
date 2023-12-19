@@ -22,6 +22,8 @@ function FormControl({ ...props }, ref) {
         setFirstName,
         setLastName,
         setEmail,
+        personal,
+        otherLabel,
     } = props;
 
     return (
@@ -42,6 +44,8 @@ function FormControl({ ...props }, ref) {
                 setFirstName={setFirstName}
                 setLastName={setLastName}
                 setEmail={setEmail}
+                personal={personal}
+                otherLabel={otherLabel}
             />
         </div>
     );

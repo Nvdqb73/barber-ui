@@ -12,6 +12,7 @@ import Book from '~/Pages/Book';
 import BookingHistory from '~/Pages/BookingHistory';
 import Contact from '~/Pages/Contact';
 import Cart from '~/Pages/Cart';
+import PersonalPage from '~/Pages/PersonalPage';
 
 //no Login open
 const publicRoutes = [
@@ -27,6 +28,7 @@ const publicRoutes = [
     { path: config.routes.bookingHistory, component: BookingHistory },
     { path: config.routes.contact, component: Contact },
     { path: config.routes.cart, component: Cart },
+    { path: config.routes.personalPage, component: PersonalPage },
 ];
 
 //Login open
