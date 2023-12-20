@@ -20,6 +20,7 @@ const routes = {
     contact: '/contact',
     cart: '/cart',
     personalPage: '/personalPage',
+    order: '/order',
 };
 
 export default routes;

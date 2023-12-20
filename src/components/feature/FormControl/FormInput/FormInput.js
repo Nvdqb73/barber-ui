@@ -22,6 +22,8 @@ function FormInput({ medium, ...props }, ref) {
         setEmail,
         personal,
         otherLabel,
+        setPhone,
+        orderSize,
     } = props;
 
     const wrapperClass = cx('wrapper', {
@@ -34,6 +36,7 @@ function FormInput({ medium, ...props }, ref) {
 
     const classer = cx('inputWrap', {
         medium,
+        orderSize,
     });
     const classers = cx('label', {
         medium,
@@ -62,6 +65,8 @@ function FormInput({ medium, ...props }, ref) {
                 break;
             case 'email':
                 setEmail(e.target.value);
+            case 'phone':
+                setPhone(e.target.value);
             default:
                 return;
         }

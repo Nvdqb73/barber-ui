@@ -1,6 +1,7 @@
 import classNames from 'classnames/bind';
-import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useEffect, useState, useRef } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import styles from './PersonalPage.module.scss';
 import FormControl from '~/components/feature/FormControl';
@@ -8,30 +9,72 @@ import FormControl from '~/components/feature/FormControl';
 import Button from '~/components/common/Button';
 import Image from '~/components/common/Image';
 
+import * as customerService from '~/services/customerService';
+
 const cx = classNames.bind(styles);
 
 function PersonalPage() {
     const location = useLocation();
     const { state } = location?.state;
-    // console.log('state', state);
 
+    const userIDRef = useRef(state?.userID);
+    const customerIDRef = useRef(state?.customerID);
     const [firstName, setFirstName] = useState(state?.firstName);
     const [lastName, setLastName] = useState(state?.lastName);
-    const [avatar, setAvatar] = useState({ preview: state?.picture });
-    // useEffect(() => {
-    //     return () => {
-    //         avatar.preview !== null && URL.revokeObjectURL(avatar.preview);
-    //     };
-    // }, [avatar]);
+    const [email, setEmail] = useState(state?.email);
+    const [phone, setPhone] = useState(state?.numberphone);
+    const [avatarCurrent, setAvatarCurrent] = useState({ preview: state?.picture });
+    const [avatarNew, setAvatarNew] = useState();
+
+    const textDateOfBirth = state?.dateOfBirth.slice(0, 10);
+
+    const [dateOfBirth, setDateOfBirth] = useState(textDateOfBirth);
+    useEffect(() => {
+        return () => {
+            avatarNew && URL.revokeObjectURL(avatarNew.preview);
+        };
+    }, [avatarNew]);
 
     const handlePreviewAvatar = (e) => {
         const file = e.target.files[0];
 
         file.preview = URL.createObjectURL(file);
-        console.log('file', file);
-        setAvatar(file);
+        // console.log('file', file);
+        setAvatarNew(file);
     };
-    console.log('avatar', avatar);
+
+    const handleDateChange = (event) => {
+        const selectedDate = event.target.value;
+        if (!selectedDate) {
+            setDateOfBirth('');
+        } else {
+            setDateOfBirth(selectedDate);
+        }
+    };
+
+    const handleUpdateInfo = async () => {
+        const userID = userIDRef.current;
+        const customerID = customerIDRef.current;
+        try {
+            const result = await customerService.updateCustomer(
+                customerID,
+                firstName,
+                lastName,
+                undefined,
+                email,
+                phone,
+                dateOfBirth,
+                userID,
+            );
+            if (result) {
+                // window.location.reload();
+                toast.success('Cập nhật thành công');
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('header')}>
@@ -65,18 +108,22 @@ function PersonalPage() {
                     </div>
                     <div className={cx('form-email')}>
                         <label className={cx('text-center')}>Email</label>
-                        <p className={cx('text-center')}>{state?.email}</p>
+                        <p className={cx('text-center')}>{email}</p>
                         <a href="/" className={cx('change-info')}>
                             Thay đổi
                         </a>
                     </div>
-                    <div className={cx('form-phone')}>
-                        <label className={cx('text-center')}>Số điện thoại</label>
-                        <p className={cx('text-center')}>{state?.numberphone}</p>
-                        <a href="/" className={cx('change-info')}>
-                            Thay đổi
-                        </a>
-                    </div>
+                    <FormControl
+                        value={phone}
+                        labelTitle="Số điện thoai"
+                        placeholder="Số điện thoại"
+                        name="phone"
+                        type="text"
+                        labelComeback
+                        personal
+                        otherLabel
+                        setPhone={setPhone}
+                    />
                     <div className={cx('form-date')}>
                         <label htmlFor="date" className={cx('text-center')}>
                             Ngày Sinh
@@ -84,21 +131,27 @@ function PersonalPage() {
                         <input
                             type="date"
                             id="date"
-                            value={state?.dateOfBirth}
-                            // onChange={handleDateChange}
+                            value={dateOfBirth}
+                            onChange={handleDateChange}
                             className={cx('inputField')}
                         />
                     </div>
 
                     <div className={cx('form-save')}>
-                        <Button lightBlue className={'btn-submit'}>
+                        <Button lightBlue className={'btn-submit'} onClick={handleUpdateInfo}>
                             Lưu Thông Tin
                         </Button>
                     </div>
                 </div>
                 <div className={cx('form-images')}>
                     <div className={cx('avatar-images')}>
-                        {avatar && <Image src={avatar.preview} className={cx('images')} />}
+                        <>
+                            {avatarNew ? (
+                                <Image src={avatarNew.preview} alt="avatar" className={cx('images')} />
+                            ) : (
+                                <Image src={avatarCurrent.preview} alt="avatar" className={cx('images')} />
+                            )}
+                        </>
                     </div>
                     <input type="file" id="file-input" className={cx('input-avatar')} onChange={handlePreviewAvatar} />
                     <div className={cx('file-avatar')}>

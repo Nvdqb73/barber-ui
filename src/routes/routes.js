@@ -1,6 +1,11 @@
 import config from '~/config';
 
+//Layout
+
 import { AddSidebarLayout } from '~/components/Layouts';
+import { OrderLayout } from '~/components/Layouts';
+
+//Page
 
 import Login from '~/Pages/Login';
 import Register from '~/Pages/Register';
@@ -13,6 +18,7 @@ import BookingHistory from '~/Pages/BookingHistory';
 import Contact from '~/Pages/Contact';
 import Cart from '~/Pages/Cart';
 import PersonalPage from '~/Pages/PersonalPage';
+import Order from '~/Pages/Order';
 
 //no Login open
 const publicRoutes = [
@@ -29,6 +35,7 @@ const publicRoutes = [
     { path: config.routes.contact, component: Contact },
     { path: config.routes.cart, component: Cart },
     { path: config.routes.personalPage, component: PersonalPage },
+    { path: config.routes.order, component: Order, layout: OrderLayout },
 ];
 
 //Login open

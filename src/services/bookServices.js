@@ -2,6 +2,7 @@ import * as httpRequest from '~/utils/httpRequest';
 export const getBook = async () => {
     try {
         const res = await httpRequest.get('Booking');
+
         return res.data;
     } catch (error) {
         console.log('error: ', error.message);

@@ -1,16 +1,40 @@
 import classNames from 'classnames/bind';
+import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 import { convertPrice } from '~/utils/convert';
 import styles from './CartItem.module.scss';
 import Button from '~/components/common/Button';
+import config from '~/config';
 
+import * as customerService from '~/services/customerService';
 const cx = classNames.bind(styles);
 
 function CartResult({ ...props }) {
+    const navigate = useNavigate();
     const { data, userID } = props;
+    const [customerItem, setCustomerItem] = useState();
 
-    console.log('userID', userID);
-    const handleOrder = () => {};
+    useEffect(() => {
+        const fetchApi = async () => {
+            const result = await customerService.getCustomer();
+            if (result) {
+                const customer = result.find((item) => item?.userID === userID);
+                setCustomerItem(customer);
+            }
+        };
+
+        fetchApi();
+    }, []);
+
+    const handleOrder = () => {
+        if (customerItem?.email && customerItem?.numberphone) {
+            navigate(config.routes.order);
+        } else {
+            toast.error('Vui lòng cập nhật email hoặc SDT');
+        }
+    };
 
     return (
         <div className={cx('wrapper')}>

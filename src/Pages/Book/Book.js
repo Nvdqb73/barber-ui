@@ -49,8 +49,9 @@ const Book = () => {
         const fetchApi = async () => {
             try {
                 const response = await serviceServices.getService();
-
-                setServices(response);
+                if (response) {
+                    setServices(response);
+                }
             } catch (error) {
                 console.error(error);
             }
@@ -59,8 +60,9 @@ const Book = () => {
         const fetchEmployees = async () => {
             try {
                 const response = await employeeServices.getEmployee();
-
-                setEmployees(response);
+                if (response) {
+                    setEmployees(response);
+                }
             } catch (error) {
                 console.error(error);
             }
@@ -69,9 +71,11 @@ const Book = () => {
         const fetchBookedTimes = async () => {
             try {
                 const response = await bookServices.getBook();
-                const startDate = response.map((Booking) => Booking.startDate);
+                if (response) {
+                    const startDate = response.map((Booking) => Booking.startDate);
 
-                setStartDate(startDate);
+                    setStartDate(startDate);
+                }
             } catch (error) {
                 console.error(error);
             }
@@ -80,8 +84,9 @@ const Book = () => {
         const fetchStore = async () => {
             try {
                 const response = await storeServices.getStore();
-
-                setStore(response);
+                if (response) {
+                    setStore(response);
+                }
             } catch (error) {
                 console.error(error);
             }
@@ -161,6 +166,7 @@ const Book = () => {
 
             if (employees && customerID) {
                 await bookServices.createBook(startDate, startTime, note, customerID, storeID, serID, employees);
+                toast.success('Đặt lịch thành công');
             }
 
             setStartDate('');
@@ -169,8 +175,6 @@ const Book = () => {
             setStore([]);
             setEmployees([]);
             setServices([]);
-
-            toast.success('Đặt lịch thành công');
         } catch (error) {
             console.error(error);
 

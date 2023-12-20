@@ -1,16 +1,16 @@
 import * as httpRequest from '~/utils/httpRequest';
-export const getCustomer = async () => {
+export const getAddress = async () => {
     try {
-        const res = await httpRequest.get('Customer');
+        const res = await httpRequest.get('Address');
         return res.data;
     } catch (error) {
         console.log('error: ', error.message);
     }
 };
 
-export const getCustomerById = async (id) => {
+export const getAddressById = async (id) => {
     try {
-        const res = await httpRequest.get(`Customer/${id}`, {
+        const res = await httpRequest.get(`Address/${id}`, {
             params: {},
         });
         return res.data;
@@ -19,9 +19,9 @@ export const getCustomerById = async (id) => {
     }
 };
 
-export const createCustomer = async (firstName, lastName, email, userID) => {
+export const createAddress = async (firstName, lastName, email, userID) => {
     try {
-        const res = await httpRequest.post('Customer', {
+        const res = await httpRequest.post('Address', {
             firstName,
             lastName,
             picture: 'null',
@@ -36,18 +36,9 @@ export const createCustomer = async (firstName, lastName, email, userID) => {
     }
 };
 
-export const updateCustomer = async (
-    id,
-    firstName,
-    lastName,
-    picture = 'string',
-    email,
-    phone,
-    dateOfBirth,
-    userID,
-) => {
+export const updateAddress = async (id, firstName, lastName, picture = 'string', email, phone, dateOfBirth, userID) => {
     try {
-        const res = await httpRequest.put(`Customer/${id}`, {
+        const res = await httpRequest.put(`Address/${id}`, {
             firstName,
             lastName,
             picture: picture,
@@ -63,9 +54,9 @@ export const updateCustomer = async (
     }
 };
 
-export const deleteCustomer = async (id) => {
+export const deleteAddress = async (id) => {
     try {
-        const res = await httpRequest.deleteRequest(`Customer/${id}`);
+        const res = await httpRequest.deleteRequest(`Address/${id}`);
         return res;
     } catch (error) {
         console.log('error: ', error.message);
