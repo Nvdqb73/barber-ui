@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from './DeliveryInfo.module.scss';
 import FormControl from '~/components/feature/FormControl';
@@ -6,40 +6,32 @@ import FormControl from '~/components/feature/FormControl';
 const cx = classNames.bind(styles);
 
 function DeliveryInfo({ ...props }) {
-    const { customerItem, address3 } = props;
+    const { state, address3 } = props;
+    const [firstName, setFirstName] = useState(state?.firstName);
+    const [lastName, setLastName] = useState(state?.lastName);
+    const [email, setEmail] = useState(state?.email);
+    const [phone, setPhone] = useState(state?.numberphone);
 
-    console.log('customerItem?.firstName', customerItem?.firstName);
-
-    const [firstName, setFirstName] = useState(customerItem?.firstName);
-    const [lastName, setLastName] = useState(customerItem?.lastName);
-    const [email, setEmail] = useState(customerItem?.email);
-    const [phone, setPhone] = useState(customerItem?.numberphone);
-
-    const [selectedAddress, setSelectedAddress] = useState({});
+    const [selectedAddress, setSelectedAddress] = useState();
 
     const handleStoreChange = (e) => {
         const selectedAddressId = e.target.value;
-        const selectedStore = address3?.find((item) => item?.addressID === parseInt(selectedAddressId));
-        console.log('1', selectedAddressId);
-        console.log('vip địa chỉ', selectedStore);
-        // setAddress(selectedAddressId);
+        const selectedStore = address3?.find((item) => item?.addressID == selectedAddressId);
         setSelectedAddress(selectedStore);
     };
-
-    console.log('selectedAddress', selectedAddress);
 
     return (
         <div className={cx('wrapper')}>
             <div className={cx('heading-info')}>
                 <h2>Thông tin nhân hàng</h2>
             </div>
-            <span>{customerItem?.firstName}</span>
-            <div>
+
+            <div className={cx('form-info')}>
                 <div className={cx('formGroup')}>
                     <label htmlFor="address">Địa chỉ</label>
                     <select
                         id="address"
-                        value={selectedAddress?.currentAddress}
+                        value={selectedAddress?.addressID}
                         onChange={handleStoreChange}
                         className={cx('inputField')}
                     >
@@ -51,6 +43,7 @@ function DeliveryInfo({ ...props }) {
                         ))}
                     </select>
                 </div>
+
                 <FormControl
                     value={email}
                     labelTitle="Email"
@@ -86,7 +79,7 @@ function DeliveryInfo({ ...props }) {
                     labelTitle="Số điện thoai"
                     placeholder="Số điện thoại"
                     name="phone"
-                    type="number"
+                    type="text"
                     labelComeback
                     setPhone={setPhone}
                 />

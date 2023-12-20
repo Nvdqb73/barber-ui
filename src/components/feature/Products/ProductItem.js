@@ -1,11 +1,9 @@
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
-import { IconCurrencyDollar } from '@tabler/icons-react';
-import { NumericFormat } from 'react-number-format';
-
 import styles from './Products.module.scss';
 import Button from '~/components/common/Button';
+import { convertPrice } from '~/utils/convert';
 
 const cx = classNames.bind(styles);
 
@@ -14,9 +12,9 @@ function ProductItem({ data }) {
         <div className={cx('product-item')}>
             <Button
                 className={cx('avatar')}
-                to={`/product/${data.proID}`}
+                to={`/product/${data?.proID}`}
                 style={{
-                    backgroundImage: `url("${data.proImage}")`,
+                    backgroundImage: `url("${data?.proImage}")`,
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: '50%',
                     backgroundSize: 'cover',
@@ -28,20 +26,17 @@ function ProductItem({ data }) {
                     color: 'blue',
                 }}
             >
-                <Button primary className={cx('btn-product')} to={`/product/${data.proID}`}>
+                <Button primary className={cx('btn-product')} to={`/product/${data?.proID}`}>
                     Xem Sản Phẩm
                 </Button>
             </Button>
             <h3 className={cx('product-name')}>
                 <Button className={cx('link-name')} href="hadfas">
-                    {data.proName}
+                    {data?.proName}
                 </Button>
             </h3>
             <div className={cx('students-count')}>
-                <IconCurrencyDollar size={15} color="#333" stroke={3} />
-                <span className={cx('quantity')}>
-                    <NumericFormat value={data.price} allowLeadingZeros thousandSeparator="./" />
-                </span>
+                <span className={cx('quantity')}>{convertPrice(data?.price)}</span>
             </div>
         </div>
     );

@@ -1,6 +1,10 @@
 .wrapper {
     padding: 12px 2px 12px 2px;
-    border: 1px solid #ccc;
+}
+
+.form-info {
+    border: 1px solid #545454;
+    border-radius: 4px;
 }
 
 .form-name {
@@ -10,6 +14,7 @@
 .formGroup {
     display: flex;
     flex-direction: column;
+    padding: 4px;
 
     label {
         display: block;
@@ -18,4 +23,8 @@
         flex: 0;
         margin: 10px 0 10px 8px;
     }
+}
+
+.inputField {
+    padding: 12px;
 }

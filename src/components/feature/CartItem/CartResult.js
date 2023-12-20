@@ -26,16 +26,23 @@ function CartResult({ ...props }) {
         };
 
         fetchApi();
-    }, []);
+    }, [userID]);
 
     const handleOrder = () => {
-        if (customerItem?.email && customerItem?.numberphone) {
-            navigate(config.routes.order);
+        if (
+            customerItem?.email &&
+            customerItem?.email !== null &&
+            customerItem?.email !== undefined &&
+            customerItem?.numberphone &&
+            customerItem?.numberphone !== null &&
+            customerItem?.numberphone !== undefined
+        ) {
+            // window.location.replace(config.routes.order);
         } else {
             toast.error('Vui lòng cập nhật email hoặc SDT');
         }
     };
-
+    const state = { state: customerItem };
     return (
         <div className={cx('wrapper')}>
             <div className={cx('cart-total')}>
@@ -50,8 +57,14 @@ function CartResult({ ...props }) {
                 </div>
             </div>
             <div className={cx('order-form')}>
-                <Button lightBlue className={cx('btn-order')} onClick={handleOrder}>
-                    Đặt Hàng
+                <Button
+                    lightBlue
+                    className={cx('btn-order')}
+                    to={config.routes.order}
+                    state={state}
+                    onClick={handleOrder}
+                >
+                    Thanh Toán
                 </Button>
             </div>
         </div>

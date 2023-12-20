@@ -65,8 +65,10 @@ function FormInput({ medium, ...props }, ref) {
                 break;
             case 'email':
                 setEmail(e.target.value);
+                break;
             case 'phone':
                 setPhone(e.target.value);
+                break;
             default:
                 return;
         }

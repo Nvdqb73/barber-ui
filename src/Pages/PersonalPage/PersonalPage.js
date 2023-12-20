@@ -8,6 +8,7 @@ import FormControl from '~/components/feature/FormControl';
 
 import Button from '~/components/common/Button';
 import Image from '~/components/common/Image';
+import BookingWarning from '~/components/common/BookingWarning';
 
 import * as customerService from '~/services/customerService';
 
@@ -76,92 +77,103 @@ function PersonalPage() {
     };
 
     return (
-        <div className={cx('wrapper')}>
-            <div className={cx('header')}>
-                <h2>Hồ Sơ Của Tôi</h2>
-                <h4>Quản lý thông tin hồ sơ để bảo mât tài khoản</h4>
-            </div>
-            <div className={cx('content')}>
-                <div className={cx('form-info')}>
-                    <div className={cx('form-name')}>
-                        <FormControl
-                            value={firstName}
-                            labelTitle="Họ & Tên đệm"
-                            placeholder="Họ & Tên đệm"
-                            name="firstName"
-                            type="text"
-                            labelComeback
-                            personal
-                            otherLabel
-                            setFirstName={setFirstName}
-                        />
-                        <FormControl
-                            value={lastName}
-                            labelTitle="Tên"
-                            placeholder="Tên"
-                            name="lastName"
-                            type="text"
-                            labelComeback
-                            personal
-                            setLastName={setLastName}
-                        />
+        <>
+            {state === null ? (
+                <BookingWarning title="Vui lòng đăng nhập để xem hồ sơ" />
+            ) : (
+                <div className={cx('wrapper')}>
+                    <div className={cx('header')}>
+                        <h2>Hồ Sơ Của Tôi</h2>
+                        <h4>Quản lý thông tin hồ sơ để bảo mât tài khoản</h4>
                     </div>
-                    <div className={cx('form-email')}>
-                        <label className={cx('text-center')}>Email</label>
-                        <p className={cx('text-center')}>{email}</p>
-                        <a href="/" className={cx('change-info')}>
-                            Thay đổi
-                        </a>
-                    </div>
-                    <FormControl
-                        value={phone}
-                        labelTitle="Số điện thoai"
-                        placeholder="Số điện thoại"
-                        name="phone"
-                        type="text"
-                        labelComeback
-                        personal
-                        otherLabel
-                        setPhone={setPhone}
-                    />
-                    <div className={cx('form-date')}>
-                        <label htmlFor="date" className={cx('text-center')}>
-                            Ngày Sinh
-                        </label>
-                        <input
-                            type="date"
-                            id="date"
-                            value={dateOfBirth}
-                            onChange={handleDateChange}
-                            className={cx('inputField')}
-                        />
-                    </div>
+                    <div className={cx('content')}>
+                        <div className={cx('form-info')}>
+                            <div className={cx('form-name')}>
+                                <FormControl
+                                    value={firstName}
+                                    labelTitle="Họ & Tên đệm"
+                                    placeholder="Họ & Tên đệm"
+                                    name="firstName"
+                                    type="text"
+                                    labelComeback
+                                    personal
+                                    otherLabel
+                                    setFirstName={setFirstName}
+                                />
+                                <FormControl
+                                    value={lastName}
+                                    labelTitle="Tên"
+                                    placeholder="Tên"
+                                    name="lastName"
+                                    type="text"
+                                    labelComeback
+                                    personal
+                                    setLastName={setLastName}
+                                />
+                            </div>
+                            <div className={cx('form-email')}>
+                                <label className={cx('text-center')}>Email</label>
+                                <p className={cx('text-center')}>{email}</p>
+                                <a href="/" className={cx('change-info')}>
+                                    Thay đổi
+                                </a>
+                            </div>
+                            <FormControl
+                                value={phone}
+                                labelTitle="Số điện thoai"
+                                placeholder="Số điện thoại"
+                                name="phone"
+                                type="text"
+                                labelComeback
+                                personal
+                                otherLabel
+                                setPhone={setPhone}
+                            />
+                            <div className={cx('form-date')}>
+                                <label htmlFor="date" className={cx('text-center')}>
+                                    Ngày Sinh
+                                </label>
+                                <input
+                                    type="date"
+                                    id="date"
+                                    value={dateOfBirth}
+                                    onChange={handleDateChange}
+                                    className={cx('inputField')}
+                                />
+                            </div>
 
-                    <div className={cx('form-save')}>
-                        <Button lightBlue className={'btn-submit'} onClick={handleUpdateInfo}>
-                            Lưu Thông Tin
-                        </Button>
+                            <div className={cx('form-save')}>
+                                <Button lightBlue className={'btn-submit'} onClick={handleUpdateInfo}>
+                                    Lưu Thông Tin
+                                </Button>
+                            </div>
+                        </div>
+                        <div className={cx('form-images')}>
+                            <div className={cx('avatar-images')}>
+                                <>
+                                    {avatarNew ? (
+                                        <Image src={avatarNew.preview} alt="avatar" className={cx('images')} />
+                                    ) : (
+                                        <Image src={avatarCurrent.preview} alt="avatar" className={cx('images')} />
+                                    )}
+                                </>
+                            </div>
+                            <input
+                                type="file"
+                                id="file-input"
+                                className={cx('input-avatar')}
+                                onChange={handlePreviewAvatar}
+                            />
+                            <div className={cx('file-avatar')}>
+                                <label htmlFor="file-input" className={cx('file-avatar-input')}>
+                                    Chọn Ảnh
+                                </label>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div className={cx('form-images')}>
-                    <div className={cx('avatar-images')}>
-                        <>
-                            {avatarNew ? (
-                                <Image src={avatarNew.preview} alt="avatar" className={cx('images')} />
-                            ) : (
-                                <Image src={avatarCurrent.preview} alt="avatar" className={cx('images')} />
-                            )}
-                        </>
-                    </div>
-                    <input type="file" id="file-input" className={cx('input-avatar')} onChange={handlePreviewAvatar} />
-                    <div className={cx('file-avatar')}>
-                        <label htmlFor="file-input" className={cx('file-avatar-input')}>
-                            Chọn Ảnh
-                        </label>
-                    </div>
-                </div>
-            </div>
-        </div>
+            )}
+        </>
     );
 }
 

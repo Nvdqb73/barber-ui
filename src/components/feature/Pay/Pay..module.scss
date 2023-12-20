@@ -1,4 +1,22 @@
 .wrapper {
-    padding: 18px;
-    border: 1px solid #ccc;
+    width: 285px;
+    padding: 12px 2px 12px 2px;
+}
+
+.form-pay {
+    border: 1px solid #545454;
+    border-radius: 4px;
+
+    .pay-item {
+        display: flex;
+        padding: 12px 8px 12px 8px;
+
+        // input {
+        //     width: 22px;
+        // }
+
+        .pay-name {
+            margin: 0 0 0 4px;
+        }
+    }
 }

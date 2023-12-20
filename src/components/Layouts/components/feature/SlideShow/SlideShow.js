@@ -3,6 +3,7 @@ import Slider from 'react-slick';
 
 import styles from './SlideShow.module.scss';
 import Image from '~/components/common/Image';
+import images from '~/assets/images';
 
 const cx = classNames.bind(styles);
 
@@ -21,13 +22,13 @@ function SlideShow() {
     return (
         <Slider {...settings}>
             <div className={cx('slide-item-1')}>
-                <Image src="https://files.fullstack.edu.vn/f8-prod/banners/Banner_01_2.png" alt="slideshow" />
+                <Image className={cx('image-banNer')} src={images.barNer1} alt="slideshow" />
             </div>
             <div className={cx('slide-item-2')}>
-                <Image src="https://files.fullstack.edu.vn/f8-prod/banners/Banner_web_ReactJS.png" alt="slideshow" />
+                <Image className={cx('image-banNer')} src={images.barNer2} alt="slideshow" />
             </div>
             <div className={cx('slide-item-3')}>
-                <Image src="https://files.fullstack.edu.vn/f8-prod/banners/20/6308a6bf603a4.png" alt="slideshow" />
+                <Image className={cx('image-banNer')} src={images.barNer3} alt="slideshow" />
             </div>
         </Slider>
     );

@@ -1,65 +1,30 @@
 import classNames from 'classnames/bind';
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import styles from './Order.module.scss';
 import DeliveryInfo from '~/components/feature/DeliveryInfo';
 import Pay from '~/components/feature/Pay';
 import InfoProductOrder from '~/components/feature/InfoProductOrder';
 
+import * as paymentServices from '~/services/paymentServices';
 import * as customerService from '~/services/customerService';
 import * as customerAddressServices from '~/services/customerAddressServices';
-
 import * as addressServices from '~/services/addressServices';
 
 const cx = classNames.bind(styles);
 function Order() {
     const [currentUser, setCurrentUser] = useState(false);
     const [userID, setUserID] = useState(null);
-    const [customerItem, setCustomerItem] = useState();
+    const [customerItem, setCustomerItem] = useState({});
     const [customerAddress, setCustomerAddress] = useState([]);
     const [address, setAddress] = useState([]);
     const [addressNew1, setAddressNew1] = useState([]);
     const [addressNew2, setAddressNew2] = useState([]);
     const address3 = [...addressNew1, ...addressNew2];
-    useEffect(() => {
-        const token = localStorage.getItem('token');
 
-        if (token) {
-            try {
-                setCurrentUser(true);
-                const decoded = jwtDecode(token);
-                setUserID(decoded?.userID);
-            } catch (error) {
-                setCurrentUser(false);
-                console.error('Bạn chưa đặng nhập:', error);
-            }
-        }
-    }, []);
-
-    useEffect(() => {
-        const fetchAPi = async () => {
-            const result = await customerService.getCustomer();
-            if (result) {
-                const customer = result.find((item) => item?.userID === userID);
-                setCustomerItem(customer);
-            }
-        };
-        fetchAPi();
-    }, [userID]);
-
-    useEffect(() => {
-        const fetchApi = async () => {
-            const result = await customerAddressServices.getCustomerAddress();
-            if (result) {
-                const customerAddressList = result.filter(
-                    (item) => item?.customerID === parseInt(customerItem?.customerID),
-                );
-                setCustomerAddress(customerAddressList);
-            }
-        };
-
-        fetchApi();
-    }, [customerItem]);
+    const location = useLocation();
+    const { state } = location?.state;
 
     useEffect(() => {
         const fetchApi = async () => {
@@ -71,24 +36,49 @@ function Order() {
         fetchApi();
     }, []);
 
-    console.log('customerAddress', customerAddress);
+    useEffect(() => {
+        const fetchApi = async () => {
+            const result = await customerAddressServices.getCustomerAddress();
+
+            if (result) {
+                const customerAddressList = result.filter((item) => item?.customerID === state?.customerID);
+                setCustomerAddress(customerAddressList);
+            }
+        };
+
+        fetchApi();
+    }, []);
+
     useEffect(() => {
         if (customerAddress.length !== 0) {
             for (let index = 0; index < customerAddress.length; index++) {
-                const addressCustomer1 = address?.filter((item) => item?.addressID === customerAddress[0].addressID);
-                const addressCustomer2 = address?.filter((item) => item?.addressID === customerAddress[1].addressID);
-
+                const addressCustomer1 = address?.filter((item) => item?.addressID == customerAddress[0].addressID);
+                const addressCustomer2 = address?.filter((item) => item?.addressID == customerAddress[1].addressID);
                 setAddressNew1(addressCustomer1);
                 setAddressNew2(addressCustomer2);
             }
         }
     }, [customerAddress]);
 
+    const [pays, setPays] = useState([]);
+    const [checked, setChecked] = useState(2);
+
+    useEffect(() => {
+        const fetchApi = async () => {
+            const response = await paymentServices.getPayment();
+            if (response) {
+                setPays(response);
+            }
+        };
+
+        fetchApi();
+    }, []);
+
     return (
         <div className={cx('wrapper')}>
-            <DeliveryInfo customerItem={customerItem} address3={address3} />
-            <Pay />
-            <InfoProductOrder />
+            <DeliveryInfo state={state} address3={address3} />
+            <Pay pays={pays} checked={checked} setChecked={setChecked} />
+            <InfoProductOrder state={state} checked={checked} />
         </div>
     );
 }
