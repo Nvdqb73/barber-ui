@@ -43,4 +43,4 @@ The site will primarily focus on showcasing the product and hairdresser, allowin
 -   Manager Admin
 -   Order product
 ## Other
-= Interface Admin: https://github.com/Nvdqb73/barber-admin
+- Interface Admin: https://github.com/Nvdqb73/barber-admin
