@@ -40,3 +40,5 @@ The site will primarily focus on showcasing the product and hairdresser, allowin
 -   Booking Service
 -   Manager Admin
 -   Order product
+## Other: 
+   - Admin interface: https://github.com/Nvdqb73/barber-admin
