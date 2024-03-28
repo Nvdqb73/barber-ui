@@ -23,6 +23,8 @@ The site will primarily focus on showcasing the product and hairdresser, allowin
 ### Step 3: Install Environment
 1. [Node js](https://nodejs.org/dist/v10.16.3/node-v10.16.3-x64.msi).
 ### Step 4 - Edit content  
+1. Edit file `.env.development`
+   
 ![Open file](https://github.com/Nvdqb73/barber-ui/assets/88336997/19e55fb5-f17f-4701-8e83-a5461fb14053)
 
 2. Run `npm install `
