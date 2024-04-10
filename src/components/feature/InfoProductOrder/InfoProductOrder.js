@@ -32,7 +32,7 @@ function InfoProductOrder({ ...props }) {
     const handleAddOrder = async () => {
         try {
             const order = await orderServices.createOrder(undefined, carts?.total, state?.customerID, checked);
-
+            console.log('order', order);
             for (let index = 0; index < carts?.list.length; index++) {
                 const data = {
                     proOrderQuantity: carts?.list[index].quantity,

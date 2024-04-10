@@ -23,7 +23,7 @@ export const put = async (path, options = {}) => {
 
 export const deleteRequest = async (path) => {
     const response = await httpRequest.delete(path);
-    return response.data ? response.data : { statusCode: response.status };
+    return response;
 };
 
 export default httpRequest;
