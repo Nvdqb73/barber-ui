@@ -41,11 +41,11 @@ function Login() {
         setLoading(true);
         const result = await userServices.loginUser(userName_L, password_L);
 
-        if (result?.data && result?.status === 200) {
-            localStorage.setItem('token', result?.data);
+        if (result?.data?.token && result?.status === 200) {
+            localStorage.setItem('token', result?.data?.token);
             setCurrentUser(true);
             navigate('/book');
-        } else if (result?.data === undefined) {
+        } else if (result?.data?.token === undefined) {
             inputNameRef.current.focus();
             toast.error('Tài khoản hoặc mặt khẩu sai!');
         }

@@ -1,14 +1,12 @@
 import classNames from 'classnames/bind';
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { jwtDecode } from 'jwt-decode';
 import styles from './Order.module.scss';
 import DeliveryInfo from '~/components/feature/DeliveryInfo';
 import Pay from '~/components/feature/Pay';
 import InfoProductOrder from '~/components/feature/InfoProductOrder';
 
 import * as paymentServices from '~/services/paymentServices';
-import * as customerService from '~/services/customerService';
 import * as customerAddressServices from '~/services/customerAddressServices';
 import * as addressServices from '~/services/addressServices';
 
