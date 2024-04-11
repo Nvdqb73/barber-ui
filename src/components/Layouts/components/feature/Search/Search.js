@@ -29,15 +29,14 @@ function Search() {
 
         const fetchApi = async () => {
             setLoading(true);
-
             const result = await searchServices.search(debouncedValue);
-
             if (result === undefined) {
                 setSearchResult([]);
             } else {
                 setSearchResult(result);
                 setLoading(false);
             }
+            setLoading(false);
         };
         fetchApi();
     }, [debouncedValue]);

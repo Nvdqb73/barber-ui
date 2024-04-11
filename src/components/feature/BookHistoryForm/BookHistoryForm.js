@@ -6,6 +6,7 @@ const cx = classNames.bind(styles);
 
 function BookHistoryForm({ ...props }) {
     const { bookings, stores, services, employees } = props;
+
     return (
         <div className={cx('wrapper')}>
             <Table striped>
@@ -15,7 +16,7 @@ function BookHistoryForm({ ...props }) {
                         <th>Ngày đặt</th>
                         <th>Thời gian</th>
                         <th>Cửa hàng</th>
-                        <th>Dịch vụ</th>
+                        {/* <th>Dịch vụ</th> */}
                         <th>Tên thợ</th>
                     </tr>
                 </thead>
@@ -25,8 +26,8 @@ function BookHistoryForm({ ...props }) {
                             <td>{booking.bookingID}</td>
                             <td>{booking.startDate}</td>
                             <td>{booking.startTime}</td>
-                            <td>{stores?.find((store) => store?.storeID === booking?.storeID).storeName}</td>
-                            <td>{services?.find((service) => service?.serID === booking?.serID).serName}</td>
+                            <td>{stores?.find((store) => store?.storeID === booking?.storeID)?.storeName}</td>
+                            {/* <td>{services?.find((service) => service?.serID === booking?.serID)?.serName}</td> */}
                             <td>
                                 {employees
                                     ?.find((employee) => employee?.employeID === booking?.employeID)

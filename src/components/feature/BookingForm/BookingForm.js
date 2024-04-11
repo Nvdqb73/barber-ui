@@ -66,7 +66,7 @@ function BookingForm({ ...props }) {
                             employees
                                 .filter((employee) => employee?.storeID === parseInt(storeID))
                                 .map((employee) => (
-                                    <option key={employee.employeID} value={employee.employeID}>
+                                    <option key={employee.employeeID} value={employee.employeeID}>
                                         {employee.firstName} {employee.lastName}
                                     </option>
                                 ))}

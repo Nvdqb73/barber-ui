@@ -2,6 +2,7 @@ import classNames from 'classnames/bind';
 import { useEffect, useState, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { jwtDecode } from 'jwt-decode';
 
 import styles from './PersonalPage.module.scss';
 import FormControl from '~/components/feature/FormControl';
@@ -11,6 +12,8 @@ import Image from '~/components/common/Image';
 import BookingWarning from '~/components/common/BookingWarning';
 
 import * as customerService from '~/services/customerService';
+import * as userService from '~/services/userServices';
+import { bool } from 'prop-types';
 
 const cx = classNames.bind(styles);
 
@@ -18,31 +21,67 @@ function PersonalPage() {
     const location = useLocation();
     const { state } = location?.state;
 
-    const userIDRef = useRef(state?.userID);
-    const customerIDRef = useRef(state?.customerID);
-    const [firstName, setFirstName] = useState(state?.firstName);
-    const [lastName, setLastName] = useState(state?.lastName);
-    const [email, setEmail] = useState(state?.email);
-    const [phone, setPhone] = useState(state?.numberphone);
-    const [avatarCurrent, setAvatarCurrent] = useState({ preview: state?.picture });
+    const [userId, setUserId] = useState('');
+    const [customerId, setCustomerId] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState('');
+    const [avatarCurrent, setAvatarCurrent] = useState(null);
     const [avatarNew, setAvatarNew] = useState();
+    const [showInputEmail, setShowInputEmail] = useState(false);
+    const [showInputSDT, setShowInputSDT] = useState(false);
+    const [showPersonalPage, setPersonalPage] = useState(false);
 
-    const textDateOfBirth = state?.dateOfBirth.slice(0, 10);
+    const [dateOfBirth, setDateOfBirth] = useState('');
 
-    const [dateOfBirth, setDateOfBirth] = useState(textDateOfBirth);
     useEffect(() => {
-        return () => {
-            avatarNew && URL.revokeObjectURL(avatarNew.preview);
-        };
-    }, [avatarNew]);
+        const token = localStorage.getItem('token');
 
-    const handlePreviewAvatar = (e) => {
-        const file = e.target.files[0];
+        if (token) {
+            try {
+                setPersonalPage(true);
+                const decoded = jwtDecode(token);
 
-        file.preview = URL.createObjectURL(file);
-        // console.log('file', file);
-        setAvatarNew(file);
-    };
+                if (decoded?.userID) {
+                    const fetchApi = async () => {
+                        const customers = await customerService.getCustomer();
+                        if (customers) {
+                            const customer = customers.find((customer) => customer?.userID === decoded?.userID);
+                            if (customer) {
+                                setUserId(customer?.userID);
+                                setCustomerId(customer?.customerID);
+                                setFirstName(customer?.firstName);
+                                setLastName(customer?.lastName);
+                                setEmail(customer?.email);
+                                setPhone(customer?.numberphone);
+                                setAvatarCurrent(customer?.picture);
+                                setDateOfBirth(customer?.dateOfBirth.slice(0, 10));
+                            }
+                        }
+                    };
+
+                    fetchApi();
+                }
+            } catch (error) {
+                setPersonalPage(false);
+                toast.error('Bạn chưa đăng nhập!');
+            }
+        }
+    }, []);
+
+    // useEffect(() => {
+    //     return () => {
+    //         avatarNew && URL.revokeObjectURL(avatarNew.preview);
+    //     };
+    // }, [avatarNew]);
+
+    // const handlePreviewAvatar = (e) => {
+    //     const file = e.target.files[0];
+
+    //     file.preview = URL.createObjectURL(file);
+    //     setAvatarNew(file);
+    // };
 
     const handleDateChange = (event) => {
         const selectedDate = event.target.value;
@@ -54,22 +93,21 @@ function PersonalPage() {
     };
 
     const handleUpdateInfo = async () => {
-        const userID = userIDRef.current;
-        const customerID = customerIDRef.current;
         try {
             const result = await customerService.updateCustomer(
-                customerID,
+                customerId,
                 firstName,
                 lastName,
                 undefined,
                 email,
                 phone,
                 dateOfBirth,
-                userID,
+                userId,
             );
             if (result) {
-                // window.location.reload();
                 toast.success('Cập nhật thành công');
+            } else {
+                toast.success('Cập nhật thất bại');
             }
         } catch (error) {
             console.log(error);
@@ -78,7 +116,7 @@ function PersonalPage() {
 
     return (
         <>
-            {state === null ? (
+            {showPersonalPage == null ? (
                 <BookingWarning title="Vui lòng đăng nhập để xem hồ sơ" />
             ) : (
                 <div className={cx('wrapper')}>
@@ -112,23 +150,68 @@ function PersonalPage() {
                                 />
                             </div>
                             <div className={cx('form-email')}>
-                                <label className={cx('text-center')}>Email</label>
-                                <p className={cx('text-center')}>{email}</p>
-                                <a href="/" className={cx('change-info')}>
+                                {showInputEmail ? (
+                                    <FormControl
+                                        value={email}
+                                        labelTitle="Email"
+                                        placeholder="Email muốn thay đổi....."
+                                        name="email"
+                                        type="text"
+                                        labelComeback
+                                        personal
+                                        otherLabel
+                                        setEmail={setEmail}
+                                    />
+                                ) : (
+                                    <>
+                                        <label className={cx('text-center')}>Email</label>
+                                        <p
+                                            className={cx('text-center', {
+                                                'margin-label': true,
+                                            })}
+                                        >
+                                            {email === 'null' || phone === '' ? 'Chưa có Email!' : email}
+                                        </p>
+                                    </>
+                                )}
+                                <button
+                                    className={cx('change-info')}
+                                    onClick={() => setShowInputEmail(!showInputEmail)}
+                                >
                                     Thay đổi
-                                </a>
+                                </button>
                             </div>
-                            <FormControl
-                                value={phone}
-                                labelTitle="Số điện thoai"
-                                placeholder="Số điện thoại"
-                                name="phone"
-                                type="text"
-                                labelComeback
-                                personal
-                                otherLabel
-                                setPhone={setPhone}
-                            />
+
+                            <div className={cx('form-email')}>
+                                {showInputSDT ? (
+                                    <FormControl
+                                        value={phone}
+                                        labelTitle="Số điện thoai"
+                                        placeholder="Số điện thoại"
+                                        name="phone"
+                                        type="text"
+                                        labelComeback
+                                        personal
+                                        otherLabel
+                                        setPhone={setPhone}
+                                    />
+                                ) : (
+                                    <>
+                                        <label className={cx('text-center')}>SDT</label>
+                                        <p
+                                            className={cx('text-center', {
+                                                'margin-label': true,
+                                            })}
+                                        >
+                                            {phone === 'null' || phone === '' ? 'Chưa có SDT!' : phone}
+                                        </p>
+                                    </>
+                                )}
+                                <button className={cx('change-info')} onClick={() => setShowInputSDT(!showInputSDT)}>
+                                    Thay đổi
+                                </button>
+                            </div>
+
                             <div className={cx('form-date')}>
                                 <label htmlFor="date" className={cx('text-center')}>
                                     Ngày Sinh
@@ -148,7 +231,7 @@ function PersonalPage() {
                                 </Button>
                             </div>
                         </div>
-                        <div className={cx('form-images')}>
+                        {/* <div className={cx('form-images')}>
                             <div className={cx('avatar-images')}>
                                 <>
                                     {avatarNew ? (
@@ -169,7 +252,7 @@ function PersonalPage() {
                                     Chọn Ảnh
                                 </label>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             )}

@@ -115,7 +115,7 @@ const Book = () => {
 
     const handleStylistChange = (event) => {
         const selectedStylistId = event.target.value;
-        const selectedStylist = employees.find((employee) => employee.employeID === parseInt(selectedStylistId));
+        const selectedStylist = employees.find((employee) => employee?.employeeID === parseInt(selectedStylistId));
         setEmployee(selectedStylist);
     };
 
@@ -159,27 +159,28 @@ const Book = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        try {
-            const employees = employee?.employeID;
 
-            const customerID = customerItem?.customerID;
+        const employeeID = employee?.employeeID;
+        const serID = selectedService?.serID;
+        const customerID = customerItem?.customerID;
 
-            if (employees && customerID) {
-                await bookServices.createBook(startDate, startTime, note, customerID, storeID, serID, employees);
-                toast.success('Đặt lịch thành công');
+        if (customerID) {
+            const startTimeNew = startTime + ':00';
+            const booking = await bookServices.createBook(startDate, startTimeNew, note, customerID, storeID);
+            if (booking) {
+                const bookingService = await bookServices.createBookService(booking?.bookingID, serID, employeeID);
+                if (bookingService) {
+                    toast.success('Đặt lịch thành công!');
+                }
+                return;
+            } else {
+                toast.error('Đặt lịch thất bại vui lòng thử lại!');
             }
-
-            setStartDate('');
-            setStartTime('');
-            setNote('');
-            setStore([]);
-            setEmployees([]);
-            setServices([]);
-        } catch (error) {
-            console.error(error);
-
-            toast.error('Đặt lịch thất bại vui lòng thử lại!');
         }
+
+        setStartDate('');
+        setStartTime('');
+        setNote('');
     };
 
     return (

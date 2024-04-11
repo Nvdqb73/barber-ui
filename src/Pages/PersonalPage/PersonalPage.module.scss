@@ -24,6 +24,7 @@
 .form-email {
     display: flex;
     margin: 18px 0 12px 0;
+    width: 60%;
 
     .text-center {
         line-height: 28px;
@@ -31,10 +32,18 @@
 }
 
 .change-info {
-    margin-left: 144px;
     line-height: 28px;
     text-decoration: underline;
     color: var(--red);
+    display: flex;
+    align-items: center;
+    display: inline-block;
+    background: none;
+    width: 100px;
+}
+
+.margin-label {
+    margin-right: 144px;
 }
 
 .form-phone {
