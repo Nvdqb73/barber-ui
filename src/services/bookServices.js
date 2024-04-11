@@ -20,16 +20,28 @@ export const getBookById = async (id) => {
     }
 };
 
-export const createBook = async (startDate, startTime, note, customerID, storeID, serID, employeID) => {
+export const createBook = async (startDate, startTime, note, customerID, storeID) => {
     try {
         const res = await httpRequest.post('Booking', {
             startDate,
+            dateFounded: startDate,
             startTime,
             note,
             customerID,
             storeID,
+        });
+        return res.data;
+    } catch (error) {
+        console.log('error: ', error.message);
+    }
+};
+
+export const createBookService = async (bookingID, serID, employeeID) => {
+    try {
+        const res = await httpRequest.post('BookingService', {
+            bookingID,
             serID,
-            employeID,
+            employeeID,
         });
         return res.data;
     } catch (error) {

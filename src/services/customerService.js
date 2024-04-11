@@ -37,7 +37,7 @@ export const createCustomer = async (firstName, lastName, email, userID) => {
 };
 
 export const updateCustomer = async (
-    id,
+    customerId,
     firstName,
     lastName,
     picture = 'string',
@@ -47,7 +47,7 @@ export const updateCustomer = async (
     userID,
 ) => {
     try {
-        const res = await httpRequest.put(`Customer/${id}`, {
+        const res = await httpRequest.put(`Customer/${customerId}`, {
             firstName,
             lastName,
             picture: picture,
